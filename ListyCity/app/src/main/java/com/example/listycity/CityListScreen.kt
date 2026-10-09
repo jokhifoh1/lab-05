@@ -166,14 +166,17 @@ fun CityListScreen(
                         showAddCityFields = false
                         newCityName = ""
                         newProvinceName = ""
-                        if(selectedCity == city){
-                            citySelected = false
-                        } else {
+                        if(selectedCity != city){
                             citySelected = true
+                            selectedCity = city
+                            editedCityName = city.name
+                            editedProvinceName = city.province
+                        } else {
+                            citySelected = false
+                            selectedCity = null
+                            editedCityName = ""
+                            editedProvinceName = ""
                         }
-                        selectedCity = city
-                        editedCityName = city.name
-                        editedProvinceName = city.province
                     },
                     onDeleteClick = {
                         onDeleteCity(city)
