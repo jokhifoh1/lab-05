@@ -7,7 +7,7 @@
 
 ## References and Resources
 
-`N/A`
+https://firebase.google.com/docs/firestore/manage-data/delete-data#kotlin
 
 ## Verbal Collaboration
 
