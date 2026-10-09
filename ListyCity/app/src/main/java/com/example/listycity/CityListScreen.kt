@@ -32,6 +32,7 @@ fun CityListScreen(
     cities: List<City>,
     onAddCity: (City) -> Unit,
     onUpdateCity: (City, City) -> Unit,
+    onDeleteCity: (City) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
@@ -40,6 +41,7 @@ fun CityListScreen(
     var selectedCity by remember { mutableStateOf<City?>(null) }
     var editedCityName by remember { mutableStateOf("") }
     var editedProvinceName by remember { mutableStateOf("") }
+    var citySelected by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.fillMaxSize()) {
         Row(
@@ -104,7 +106,7 @@ fun CityListScreen(
                 }
             }
         }
-        if (selectedCity != null) {
+        if (citySelected) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -146,6 +148,7 @@ fun CityListScreen(
                             )
 
                             selectedCity = null
+                            citySelected = false
                             editedCityName = ""
                             editedProvinceName = ""
                         }
@@ -163,9 +166,17 @@ fun CityListScreen(
                         showAddCityFields = false
                         newCityName = ""
                         newProvinceName = ""
+                        if(selectedCity == city){
+                            citySelected = false
+                        } else {
+                            citySelected = true
+                        }
                         selectedCity = city
                         editedCityName = city.name
                         editedProvinceName = city.province
+                    },
+                    onDeleteClick = {
+                        onDeleteCity(city)
                     }
                 )
                 if (index < cities.lastIndex) {
@@ -180,7 +191,8 @@ fun CityListScreen(
 @Composable
 fun CityRow(
     city: City,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -190,15 +202,21 @@ fun CityRow(
     ) {
         Text(
             text = city.name,
-            fontSize = 30.sp,
+            fontSize = 20.sp,
             modifier = Modifier.weight(1f)
         )
 
         Text(
             text = city.province,
-            fontSize = 30.sp,
+            fontSize = 20.sp,
             modifier = Modifier.weight(1f)
         )
+        Button(
+            onClick = onDeleteClick,
+            modifier = Modifier.padding(end = 8.dp)
+        ) {
+            Text("DELETE")
+        }
     }
 }
 
@@ -213,7 +231,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
             onAddCity = {},
-            onUpdateCity = { _, _ -> }
+            onUpdateCity = { _, _ -> },
+            onDeleteCity = {}
         )
     }
 }
